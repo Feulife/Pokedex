@@ -125,26 +125,23 @@ function App(props) {
     "water",
   ]);
   const [sortby, setSortby] = useState(["ID", "Name"]);
-
   const [valueregion, setValueregion] = useState("");
   const [valuetype, setValuetype] = useState("");
   const [sorttype, setSorttype] = useState("");
   const [valuesearch, setValuesearch] = useState("");
-    
-    const getAllPokemons = async (offset, limit) => {
-      const response = await axios
+
+  const getAllPokemons = async (offset, limit) => {
+    const response = await axios
       .get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
       .catch((err) => console.log("Error:", err));
-      getPokemonData(response.data.results);
-    };
-    
-    useEffect(() => {
-      getAllPokemons(offset, limit);
-    }, []);
+    getPokemonData(response.data.results);
+  };
+
+  useEffect(() => {
+    getAllPokemons(offset, limit);
+  }, []);
 
   const getPokemonData = async (result) => {
-    // debugger
-
     const pokemonArr = [],
       filterArr = [];
 
@@ -178,9 +175,6 @@ function App(props) {
       setAllPokemons(pokemonArr);
       setShowLoading(false);
     }
-
-    // console.log("allPokes");
-    // console.log(this.state.allPokemons);
   };
 
   const closeDialog = () => {
@@ -188,36 +182,26 @@ function App(props) {
   };
 
   const fetchEvoDetails = async (url) => {
-    // debugger
     const response = await axios
       .get(url)
       .catch((err) => console.log("Error:", err));
-    // console.log(response);
-
     const evoChain = [];
     let evoData = response.data.chain;
- 
+
     do {
       const evoDetails = evoData["evolution_details"][0];
-
       evoChain.push({
         species_name: evoData.species.name,
         min_level: !evoDetails ? 1 : evoDetails.min_level,
         trigger_name: !evoDetails ? null : evoDetails.trigger.name,
         item: !evoDetails ? null : evoDetails.item,
       });
-
       evoData = evoData["evolves_to"][0];
     } while (!!evoData && evoData.hasOwnProperty("evolves_to"));
-
-    // console.log("evochain");
-    // console.log(evoChain);
-
     fetchEvoImages(evoChain);
   };
 
   const fetchEvoImages = async (evoChainArr) => {
-    // debugger
     for (let i = 0; i < evoChainArr.length; i++) {
       const response = await axios
         .get(`https://pokeapi.co/api/v2/pokemon/${evoChainArr[i].species_name}`)
@@ -228,24 +212,20 @@ function App(props) {
         : (evoChainArr[i]["image_url"] =
             response.data.sprites.other["official-artwork"].front_default);
     }
-
     setEvoChain(evoChainArr);
   };
 
   const fetchPokemonData = async (number, pokemon, category, imageURL) => {
-    // debugger
-
     const response = await axios
       .get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
       .catch((err) => console.log("Error:", err));
-    // console.log(response);
 
-    const statistics = [], abs = [];
+    const statistics = [],
+      abs = [];
     const id = response.data.id;
 
     for (let i = 0; i < response.data.abilities.length; i++) {
       abs.push(response.data.abilities[i].ability.name);
-      // console.log(abs);
     }
 
     for (let j = 0; j < response.data.stats.length; j++) {
@@ -264,7 +244,6 @@ function App(props) {
     setShowInfo(true);
     setStats(statistics);
     setAbilities(abs);
-
     setEvoChain([]);
     setGenderRate("");
     setGenera("");
@@ -274,14 +253,12 @@ function App(props) {
   };
 
   const fetchPokemonDescription = async (pokemon_name) => {
-    // debugger
-
     const response = await axios
       .get(`https://pokeapi.co/api/v2/pokemon-species/${pokemon_name}`)
       .catch((err) => console.log("Error:", err));
-      fetchEvoDetails(response.data.evolution_chain.url);
+    fetchEvoDetails(response.data.evolution_chain.url);
 
-    try {      
+    try {
       for (let i = 0; i < response.data.flavor_text_entries.length - 1; i++) {
         if (response.data.flavor_text_entries[i].language.name === "en") {
           setDescription(response.data.flavor_text_entries[i].flavor_text);
@@ -300,13 +277,9 @@ function App(props) {
     } catch (e) {
       setDescription("Description not found");
     }
-
-    // console.log("description");
   };
 
   const handleChangeRegions = (event) => {
-    // debugger
-
     for (let i = 0; i < regions.length; i++) {
       if (regions[i].name === event.target.value) {
         setValueregion(event.target.value);
@@ -314,19 +287,13 @@ function App(props) {
         setIsSearch(false);
         setIsFilter(false);
         setShowLoading(true);
-
         getAllPokemons(regions[i].offset, regions[i].limit);
-
         break;
       }
     }
-
-    // console.log("limit");
-    // console.log(event.target.value);
   };
 
   const handleChangeSearch = (event) => {
-    // debugger
     if (event.target.value.length > 0) {
       setIsSearch(true);
       setValuetype("all types");
@@ -340,7 +307,6 @@ function App(props) {
     let searchArr = [];
 
     for (let i = 0; i < allPokemons.length; i++) {
-      // eslint-disable-next-line eqeqeq
       if (
         allPokemons[i].name.includes(event.target.value.toLowerCase()) ||
         allPokemons[i].id.toString().includes(event.target.value)
@@ -379,8 +345,6 @@ function App(props) {
   };
 
   const handleChangeTypes = (event) => {
-    // debugger
-
     if (event.target.value === "all types") {
       const allPoks = allPokemons;
       if (sortby === "Name") {
@@ -430,8 +394,6 @@ function App(props) {
 
     filterArr.length === 0 ? setNoDataFound(true) : setNoDataFound(false);
   };
-
-// const StarID = createContext();
 
   return (
     <>
