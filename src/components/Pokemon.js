@@ -5,9 +5,6 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { colorTypeGradients } from "../utils/utils";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
-import StarList from "./StarList";
-import StarProvider from "./StarProvider";
-// import StarRating from "./StarRating";
 
 const Pokemon = ({ id, image, name, type, onElemClick }) => {
   let finalColor;
@@ -35,13 +32,7 @@ const Pokemon = ({ id, image, name, type, onElemClick }) => {
     >
       <div className="card__header">
         <div className="poke__number">#{String(id).padStart(3, "0")}</div>
-        <div className="star__icon">
-          <StarProvider>            
-            <StarList>
-              numberID = {id}
-            </StarList>             
-          </StarProvider>
-        </div>
+        
         <div className="info__icon" onClick={() => onElemClick({ name })}>
           <svg
             stroke="currentColor"
@@ -78,7 +69,7 @@ const Pokemon = ({ id, image, name, type, onElemClick }) => {
               arrow
             >
               <div className={`poke__type__bg ${type.type.name}`}>
-                <img src={`${type.type.name}.png`} alt="poke-type"></img>
+                <img src={`${type.type.name}.png`} alt={`${type.type.name}`}></img>
               </div>
             </Tooltip>
           ))}

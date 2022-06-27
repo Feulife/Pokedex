@@ -12,8 +12,6 @@ import { colorTypeGradients } from "../utils/utils";
 import { Tooltip } from "@mui/material";
 import { Zoom } from "@mui/material";
 import { motion } from "framer-motion";
-import StarList from "./StarList";
-import StarProvider from "./StarProvider";
 
 const Dialog_Content = withStyles(( theme) => ({
   root: {
@@ -176,9 +174,6 @@ function InfoDialog(props) {
                   <div className="pokemon__id">
                     #{String(props.number).padStart(3, "0")}
                   </div>
-                  {/* <div className="star__icon">
-                    <StarList />
-                  </div> */}
                   <div className="pokemon__name">{props.name}</div>
                   <div
                     className="pokemon__genera"

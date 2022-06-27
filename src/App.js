@@ -1,8 +1,6 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import Pokemon from "./components/Pokemon";
 import InfoDialog from "./components/InfoDialog";
-import StarList from "./components/StarList";
-import StarProvider from "./components/StarProvider";
 import axios from "axios";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -132,7 +130,6 @@ function App(props) {
   const [valuetype, setValuetype] = useState("");
   const [sorttype, setSorttype] = useState("");
   const [valuesearch, setValuesearch] = useState("");
-
     
     const getAllPokemons = async (offset, limit) => {
       const response = await axios
@@ -441,7 +438,6 @@ function App(props) {
       {showLoading && <Loading />}
       {!showLoading && (
         <div className="app__container">
-          {/* <StarList></StarList> */}          
           {showInfo && (
             <InfoDialog
               open={showInfo}
